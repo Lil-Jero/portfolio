@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { CV_URL, HERO_METRIC_IDS, NAV_SECTIONS } from "@/data/content";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { CV_URLS, HERO_METRIC_IDS, NAV_SECTIONS } from "@/data/content";
+import type { AppLocale } from "@/i18n";
 import MagneticAction from "./MagneticAction.vue";
 import SectionShell from "./SectionShell.vue";
 
+const { locale } = useI18n();
+
 const EXPERIENCE_ANCHOR = `#${NAV_SECTIONS[0]}`;
+
+const cvUrl = computed(() => CV_URLS[locale.value as AppLocale]);
 
 const metrics = HERO_METRIC_IDS.map((id) => ({
   id,
@@ -21,7 +28,7 @@ const metrics = HERO_METRIC_IDS.map((id) => ({
       <MagneticAction variant="primary" :href="EXPERIENCE_ANCHOR">
         {{ $t("hero.primaryCta") }}
       </MagneticAction>
-      <MagneticAction variant="ghost" :href="CV_URL" download>
+      <MagneticAction variant="ghost" :href="cvUrl" download>
         {{ $t("hero.secondaryCta") }}
       </MagneticAction>
     </div>

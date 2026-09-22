@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { CONTACT, CV_URL } from "@/data/content";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { CONTACT, CV_URLS } from "@/data/content";
+import type { AppLocale } from "@/i18n";
 import MagneticAction from "./MagneticAction.vue";
 import SectionShell from "./SectionShell.vue";
+
+const { locale } = useI18n();
+
+const cvUrl = computed(() => CV_URLS[locale.value as AppLocale]);
 </script>
 
 <template>
@@ -20,7 +27,7 @@ import SectionShell from "./SectionShell.vue";
       <MagneticAction variant="ghost" :href="CONTACT.linkedinUrl" external>
         {{ CONTACT.linkedinLabel }}
       </MagneticAction>
-      <MagneticAction variant="ghost" :href="CV_URL" download>
+      <MagneticAction variant="ghost" :href="cvUrl" download>
         {{ $t("contact.cvCta") }}
       </MagneticAction>
     </div>

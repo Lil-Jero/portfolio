@@ -1,3 +1,5 @@
+import type { AppLocale } from "@/i18n";
+
 export type SectionId =
   | "hero"
   | "experience"
@@ -43,7 +45,10 @@ export const NAV_SECTIONS: SectionId[] = [
   "contact",
 ];
 
-export const CV_URL = "/jerome_voipierre_cv.pdf";
+export const CV_URLS: Record<AppLocale, string> = {
+  fr: "/jerome_voipierre_cv.pdf",
+  en: "/jerome_voipierre_cv_en.pdf",
+};
 
 export const HERO_METRIC_IDS: MetricId[] = [
   "onestock",
