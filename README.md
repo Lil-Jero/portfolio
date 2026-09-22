@@ -28,7 +28,7 @@ src/
 ```
 
 Le contenu ne vit pas dans les templates : il est centralisé et typé dans
-`src/data/content.ts`. Les valeurs à compléter y sont signalées par un `TODO`.
+`src/data/content.ts`.
 
 ## Design tokens
 
@@ -152,9 +152,5 @@ position.
 
 ## À compléter
 
-- `src/data/content.ts` : liens LinkedIn des quatre notes Vue 3 Tips et
-  accroches définitives
 - `src/data/content.ts` : projet vedette (titre, description, stack, code
   source, démo) et sa capture
-- `src/data/content.ts` : adresse email, profil LinkedIn
-- `public/cv.pdf` : le CV téléchargeable
