@@ -135,24 +135,8 @@ export const TIPS: Tip[] = [
 
 export const PROJECTS = {
   eyebrow: "Projets",
-  title: "Un projet abouti, deux explorations en cours.",
-  lead: "Le code parle pour lui-même sur le premier ; les deux autres montrent comment j’aborde un problème avant d’écrire la première ligne.",
-  explorationsLabel: "Explorations en cours",
-} as const;
-
-// TODO: projet vedette à définir (mini design system ou mini jeu), puis renseigner
-// le titre, la description, la stack, les deux liens et la capture d'écran.
-export const FEATURED_PROJECT = {
-  badge: "Terminé",
-  title: "[Nom du projet - mini design system ou mini jeu]",
-  description:
-    "[Une phrase sur ce que fait le projet et pourquoi tu l’as construit.]",
-  stack: ["Vue.js 3", "TypeScript", "[stack]"],
-  sourceCta: "Voir le code source",
-  sourceUrl: "#projets",
-  demoCta: "Essayer en ligne →",
-  demoUrl: "#projets",
-  previewLabel: "Aperçu / capture",
+  title: "Deux explorations produit, à des stades différents.",
+  lead: "Pas de produit fini à montrer ici, plutôt la façon dont j'aborde un problème avant d'écrire la première ligne de code.",
 } as const;
 
 export const EXPLORATIONS: Exploration[] = [
