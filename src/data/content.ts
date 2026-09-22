@@ -5,183 +5,90 @@ export type SectionId =
   | "projets"
   | "contact";
 
-export type NavLink = {
-  id: SectionId;
-  label: string;
-};
+export type MetricId = "onestock" | "years" | "tips" | "opquast";
 
-export type Metric = {
-  value: string;
-  label: string;
-};
+export type MissionId = "product" | "designSystem" | "mentoring";
 
-export type DesignSystemHighlight = {
-  value: string;
-  description: string;
-};
+export type HighlightId = "components" | "devs";
+
+export type TipId =
+  | "shallowRef"
+  | "composables"
+  | "defineModel"
+  | "pureFunctions";
 
 export type Tip = {
-  title: string;
-  hook: string;
+  id: TipId;
   url: string;
 };
 
-export type ExplorationFact = {
-  label: string;
-  value: string;
-};
+export type ExplorationId = "coachTracking" | "marketplace";
 
 export type Exploration = {
-  title: string;
-  badge: string;
+  id: ExplorationId;
   tone: "cool" | "warm";
-  description: string;
-  fact: ExplorationFact;
-  nextStep: string;
 };
 
 export const BRAND = {
   name: "jerome",
   suffix: ".dev",
-  shortcutHint: "⌘K pour naviguer",
-  shortcutHintCompact: "Sections",
 } as const;
 
-export const NAV_LINKS: NavLink[] = [
-  { id: "experience", label: "Expérience" },
-  { id: "expertise", label: "Expertise" },
-  { id: "projets", label: "Projets" },
-  { id: "contact", label: "Contact" },
+export const HOME_SECTION: SectionId = "hero";
+
+export const NAV_SECTIONS: SectionId[] = [
+  "experience",
+  "expertise",
+  "projets",
+  "contact",
 ];
 
 export const CV_URL = "/jerome_voipierre_cv.pdf";
 
-export const HERO = {
-  eyebrow: "Frontend Developer · Vue.js 3",
-  title:
-    "Je façonne des interfaces Vue.js cohérentes, du design system au dernier pixel.",
-  lead: "3 ans de dev front en Vue.js 3 chez OneStock, dont un an et demi à concevoir et faire évoluer leur design system, à mentorer et à garder chaque composant cohérent avec le suivant.",
-  primaryCta: "Voir mon parcours",
-  secondaryCta: "Télécharger le CV",
-} as const;
-
-export const HERO_METRICS: Metric[] = [
-  { value: "OneStock", label: "Design system & mentorat" },
-  { value: "3 ans", label: "Vue.js 3 en production" },
-  { value: "Vue 3 Tips", label: "Contenu hebdo sur LinkedIn" },
-  { value: "OPQUAST", label: "Qualité & accessibilité" },
+export const HERO_METRIC_IDS: MetricId[] = [
+  "onestock",
+  "years",
+  "tips",
+  "opquast",
 ];
 
-export const EXPERIENCE = {
-  eyebrow: "Expérience",
-  title: "De junior à référent design system, chez OneStock.",
-  role: "Développeur Frontend",
-  company: "OneStock",
-  period: "2023 - aujourd’hui",
-  missions: [
-    "Développement produit en Vue.js 3 sur la plateforme de gestion de commandes",
-    "Conception et évolution du design system pendant un an et demi",
-    "Mentorat de nouveaux arrivants et accompagnement d’une reconversion interne vers le front",
-  ],
-  designSystemLabel: "Design system",
-  storybookCta: "Voir le Storybook public →",
-  storybookUrl: "https://design-system.onestock-retail.com",
-  previousLabel: "Avant OneStock",
-  previous: "Wiseas Connect - développement et communication digitale",
-} as const;
-
-export const DESIGN_SYSTEM_HIGHLIGHTS: DesignSystemHighlight[] = [
-  {
-    value: "~30 composants",
-    description: "documentés et versionnés dans Storybook",
-  },
-  {
-    value: "3 devs",
-    description:
-      "accompagnés - 2 nouveaux arrivants, 1 reconversion vers le front",
-  },
+export const MISSION_IDS: MissionId[] = [
+  "product",
+  "designSystem",
+  "mentoring",
 ];
 
-export const EXPERTISE = {
-  eyebrow: "Expertise",
-  title: "Des notes techniques sur Vue.js 3, ancrées dans du code réel.",
-  lead: "Publiées chaque semaine sur LinkedIn, sous le tag Vue 3 Tips - chacune est née d’un cas rencontré chez OneStock.",
-  tag: "Vue 3 Tips",
-  readCta: "Lire sur LinkedIn →",
-} as const;
+export const HIGHLIGHT_IDS: HighlightId[] = ["components", "devs"];
+
+export const STORYBOOK_URL = "https://design-system.onestock-retail.com";
 
 export const TIPS: Tip[] = [
   {
-    title: "ref vs shallowRef",
-    hook: "Quand la réactivité profonde ne sert à rien - et ce qu’elle coûte en performance.",
+    id: "shallowRef",
     url: "https://www.linkedin.com/posts/j%C3%A9r%C3%B4me-voipierre_tu-utilises-ref-pour-stocker-tes-listes-activity-7487786066242924544-10-_?utm_source=share&utm_medium=member_desktop&rcm=ACoAACotpaoBmaZuZPOBWDzeF75yHhd8ShiBvys",
   },
   {
-    title: "Nommer ses composables",
-    hook: "Une convention simple pour que toute l’équipe s’y retrouve, projet après projet.",
+    id: "composables",
     url: "https://www.linkedin.com/posts/j%C3%A9r%C3%B4me-voipierre_un-fichier-vue-sans-use-cest-quoi-%C3%A0-lint%C3%A9rieur-activity-7490769267957600259-e_dS?utm_source=share&utm_medium=member_desktop&rcm=ACoAACotpaoBmaZuZPOBWDzeF75yHhd8ShiBvys",
   },
   {
-    title: "defineModel",
-    hook: "Le sucre syntaxique qui simplifie enfin le v-model des composants.",
+    id: "defineModel",
     url: "https://www.linkedin.com/posts/j%C3%A9r%C3%B4me-voipierre_tu-utilises-encore-modelvalue-updatemodelvalue-activity-7493322933604405248-aZzP?utm_source=share&utm_medium=member_desktop&rcm=ACoAACotpaoBmaZuZPOBWDzeF75yHhd8ShiBvys",
   },
   {
-    title: "Fonctions pures dans les composants",
-    hook: "Isoler la logique rend les tests, et la relecture, beaucoup plus simples.",
+    id: "pureFunctions",
     url: "https://www.linkedin.com/posts/j%C3%A9r%C3%B4me-voipierre_une-fonction-qui-modifie-lobjet-quon-lui-activity-7498299371340472320-TrcE?utm_source=share&utm_medium=member_desktop&rcm=ACoAACotpaoBmaZuZPOBWDzeF75yHhd8ShiBvys",
   },
 ];
 
-export const PROJECTS = {
-  eyebrow: "Projets",
-  title: "Deux explorations produit, à des stades différents.",
-  lead: "Pas de produit fini à montrer ici, plutôt la façon dont j'aborde un problème avant d'écrire la première ligne de code.",
-} as const;
-
 export const EXPLORATIONS: Exploration[] = [
-  {
-    title: "Suivi coachs sportifs",
-    badge: "Phase discovery",
-    tone: "cool",
-    description:
-      "Une app freemium pour que les coachs sportifs indépendants suivent les séances et la progression de leurs clients.",
-    fact: { label: "Stack", value: "Vue.js 3 · Capacitor" },
-    nextStep:
-      "Prochaine étape : 5 à 8 entretiens coachs pour valider le besoin avant la première ligne de code.",
-  },
-  {
-    title: "Marketplace coachs vérifiés",
-    badge: "Recherche marché",
-    tone: "warm",
-    description:
-      "Trouver un coach sportif indépendant vérifié à Toulouse - un Doctolib du sport, pensé pour un marché encore peu régulé.",
-    fact: {
-      label: "Cible offre",
-      value: "coachs indépendants (auto-entrepreneurs)",
-    },
-    nextStep:
-      "Piste de différenciation : la carte professionnelle comme signal de confiance.",
-  },
+  { id: "coachTracking", tone: "cool" },
+  { id: "marketplace", tone: "warm" },
 ];
 
 export const CONTACT = {
-  eyebrow: "Contact",
-  title: "On construit quelque chose ensemble ?",
-  lead: "Ouvert aux opportunités à Toulouse et ses environs, ou en full remote.",
   email: "jerome.voipierre@gmail.com",
   emailUrl: "mailto:jerome.voipierre@gmail.com",
   linkedinLabel: "linkedin.com/in/jerome-voipierre",
   linkedinUrl: "https://www.linkedin.com/in/j%C3%A9r%C3%B4me-voipierre/",
-  cvCta: "Télécharger le CV",
-  footer: "Merci d’être arrivé jusqu’ici.",
-} as const;
-
-export const HOME_LINK: NavLink = { id: "hero", label: "Accueil" };
-
-export const PALETTE = {
-  label: "Navigation rapide",
-  placeholder: "Aller à une section…",
-  emptyState: "Aucune section ne correspond.",
-  hint: "Entrée pour y aller · Échap pour fermer",
 } as const;

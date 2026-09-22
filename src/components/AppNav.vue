@@ -1,36 +1,43 @@
 <script setup lang="ts">
-import { BRAND, NAV_LINKS, PALETTE } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
+import { BRAND, HOME_SECTION, NAV_SECTIONS } from "@/data/content";
+import LocaleToggle from "./LocaleToggle.vue";
+import MagneticAction from "./MagneticAction.vue";
 
 const emit = defineEmits<{
-  paletteRequested: []
-}>()
+  paletteRequested: [];
+}>();
 
-const navItems = NAV_LINKS.map((link) => ({ ...link, href: `#${link.id}` }))
+const navItems = NAV_SECTIONS.map((id) => ({ id, href: `#${id}` }));
 </script>
 
 <template>
   <header class="app-nav glass">
-    <nav class="nav-inner layout-container" aria-label="Navigation principale">
-      <a class="brand" href="#hero">
+    <nav class="nav-inner layout-container" :aria-label="$t('nav.ariaLabel')">
+      <a class="brand" :href="`#${HOME_SECTION}`">
         {{ BRAND.name }}<span class="brand-suffix">{{ BRAND.suffix }}</span>
       </a>
 
       <ul class="nav-list">
         <li v-for="item in navItems" :key="item.id">
-          <a class="nav-link" :href="item.href" :data-section="item.id">{{ item.label }}</a>
+          <a class="nav-link" :href="item.href" :data-section="item.id">
+            {{ $t(`sections.${item.id}`) }}
+          </a>
         </li>
       </ul>
 
-      <MagneticAction
-        variant="quiet"
-        class="palette-badge"
-        :aria-label="PALETTE.label"
-        @click="emit('paletteRequested')"
-      >
-        <span class="hint-full">{{ BRAND.shortcutHint }}</span>
-        <span class="hint-compact">{{ BRAND.shortcutHintCompact }}</span>
-      </MagneticAction>
+      <div class="nav-actions">
+        <MagneticAction
+          variant="quiet"
+          class="palette-badge"
+          :aria-label="$t('palette.label')"
+          @click="emit('paletteRequested')"
+        >
+          <span class="hint-full">{{ $t("nav.shortcutHint") }}</span>
+          <span class="hint-compact">{{ $t("nav.shortcutHintCompact") }}</span>
+        </MagneticAction>
+
+        <LocaleToggle />
+      </div>
     </nav>
   </header>
 </template>
@@ -90,6 +97,12 @@ const navItems = NAV_LINKS.map((link) => ({ ...link, href: `#${link.id}` }))
 
 .nav-link:hover {
   --nav-link-hover: 1;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
 }
 
 .palette-badge {

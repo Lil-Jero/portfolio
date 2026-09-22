@@ -1,61 +1,70 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import { HOME_LINK, NAV_LINKS, PALETTE, type NavLink, type SectionId } from '@/data/content'
+import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { HOME_SECTION, NAV_SECTIONS, type SectionId } from "@/data/content";
 
-const DIACRITICS_PATTERN = /\p{Diacritic}/gu
-const PALETTE_ITEMS: NavLink[] = [HOME_LINK, ...NAV_LINKS]
+const DIACRITICS_PATTERN = /\p{Diacritic}/gu;
+const PALETTE_SECTIONS: SectionId[] = [HOME_SECTION, ...NAV_SECTIONS];
 
 const { open } = defineProps<{
-  open: boolean
-}>()
+  open: boolean;
+}>();
 
 const emit = defineEmits<{
-  close: []
-  sectionSelected: [sectionId: SectionId]
-}>()
+  close: [];
+  sectionSelected: [sectionId: SectionId];
+}>();
 
-const query = ref('')
-const highlightedIndex = ref(0)
-const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
+const { t } = useI18n();
+
+const query = ref("");
+const highlightedIndex = ref(0);
+const searchInput = useTemplateRef<HTMLInputElement>("searchInput");
 
 const normalize = (value: string): string =>
-  value.normalize('NFD').replace(DIACRITICS_PATTERN, '').toLowerCase()
+  value.normalize("NFD").replace(DIACRITICS_PATTERN, "").toLowerCase();
+
+const paletteItems = computed(() =>
+  PALETTE_SECTIONS.map((id) => ({ id, label: t(`sections.${id}`) })),
+);
 
 const matchingItems = computed(() => {
-  const term = normalize(query.value.trim())
-  if (term === '') return PALETTE_ITEMS
-  return PALETTE_ITEMS.filter((item) => normalize(item.label).includes(term))
-})
+  const term = normalize(query.value.trim());
+  if (term === "") return paletteItems.value;
+  return paletteItems.value.filter((item) =>
+    normalize(item.label).includes(term),
+  );
+});
 
-const matchCount = computed(() => matchingItems.value.length)
-const hasNoMatch = computed(() => matchCount.value === 0)
+const matchCount = computed(() => matchingItems.value.length);
+const hasNoMatch = computed(() => matchCount.value === 0);
 
 const selectHighlighted = () => {
-  const item = matchingItems.value[highlightedIndex.value]
-  if (item === undefined) return
-  emit('sectionSelected', item.id)
-}
+  const item = matchingItems.value[highlightedIndex.value];
+  if (item === undefined) return;
+  emit("sectionSelected", item.id);
+};
 
 const moveHighlight = (step: number) => {
-  const count = matchingItems.value.length
-  if (count === 0) return
-  highlightedIndex.value = (highlightedIndex.value + step + count) % count
-}
+  const count = matchingItems.value.length;
+  if (count === 0) return;
+  highlightedIndex.value = (highlightedIndex.value + step + count) % count;
+};
 
 watch(query, () => {
-  highlightedIndex.value = 0
-})
+  highlightedIndex.value = 0;
+});
 
 watch(
   () => open,
   async (isOpen) => {
-    if (!isOpen) return
-    query.value = ''
-    highlightedIndex.value = 0
-    await nextTick()
-    searchInput.value?.focus()
+    if (!isOpen) return;
+    query.value = "";
+    highlightedIndex.value = 0;
+    await nextTick();
+    searchInput.value?.focus();
   },
-)
+);
 </script>
 
 <template>
@@ -68,22 +77,35 @@ watch(
     @keydown.up.prevent="moveHighlight(-1)"
     @keydown.enter.prevent="selectHighlighted"
   >
-    <div class="palette" role="dialog" aria-modal="true" :aria-label="PALETTE.label">
+    <div
+      class="palette"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="$t('palette.label')"
+    >
       <input
         ref="searchInput"
         v-model="query"
         class="palette-input"
         type="search"
         autocomplete="off"
-        :placeholder="PALETTE.placeholder"
-        :aria-label="PALETTE.label"
+        :placeholder="$t('palette.placeholder')"
+        :aria-label="$t('palette.label')"
       />
 
-      <div class="palette-results" :data-count="matchCount" :data-highlight="highlightedIndex">
+      <div
+        class="palette-results"
+        :data-count="matchCount"
+        :data-highlight="highlightedIndex"
+      >
         <span class="palette-highlight" aria-hidden="true" />
 
         <TransitionGroup tag="ul" name="palette-row" class="palette-list">
-          <li v-for="(item, index) in matchingItems" :key="item.id" class="palette-row">
+          <li
+            v-for="(item, index) in matchingItems"
+            :key="item.id"
+            class="palette-row"
+          >
             <button
               class="palette-item"
               :class="{ 'is-highlighted': index === highlightedIndex }"
@@ -98,9 +120,11 @@ watch(
         </TransitionGroup>
       </div>
 
-      <p v-if="hasNoMatch" class="palette-empty">{{ PALETTE.emptyState }}</p>
+      <p v-if="hasNoMatch" class="palette-empty">
+        {{ $t("palette.emptyState") }}
+      </p>
 
-      <p class="palette-hint mono-label">{{ PALETTE.hint }}</p>
+      <p class="palette-hint mono-label">{{ $t("palette.hint") }}</p>
     </div>
   </div>
 </template>
@@ -156,13 +180,13 @@ watch(
 }
 
 @for $count from 0 through 5 {
-  .palette-results[data-count='#{$count}'] {
+  .palette-results[data-count="#{$count}"] {
     --palette-rows: #{$count};
   }
 }
 
 @for $index from 0 through 4 {
-  .palette-results[data-highlight='#{$index}'] {
+  .palette-results[data-highlight="#{$index}"] {
     --palette-highlight-row: #{$index};
   }
 }

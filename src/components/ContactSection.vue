@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { CONTACT, CV_URL } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
-import SectionShell from './SectionShell.vue'
+import { CONTACT, CV_URL } from "@/data/content";
+import MagneticAction from "./MagneticAction.vue";
+import SectionShell from "./SectionShell.vue";
 </script>
 
 <template>
-  <SectionShell section-id="contact" :eyebrow="CONTACT.eyebrow" align="center">
-    <h2 class="contact-title reveal">{{ CONTACT.title }}</h2>
-    <p class="section-lead reveal">{{ CONTACT.lead }}</p>
+  <SectionShell
+    section-id="contact"
+    :eyebrow="$t('contact.eyebrow')"
+    align="center"
+  >
+    <h2 class="contact-title reveal">{{ $t("contact.title") }}</h2>
+    <p class="section-lead reveal">{{ $t("contact.lead") }}</p>
 
     <div class="contact-actions reveal">
       <MagneticAction variant="primary" :href="CONTACT.emailUrl">
@@ -17,12 +21,12 @@ import SectionShell from './SectionShell.vue'
         {{ CONTACT.linkedinLabel }}
       </MagneticAction>
       <MagneticAction variant="ghost" :href="CV_URL" download>
-        {{ CONTACT.cvCta }}
+        {{ $t("contact.cvCta") }}
       </MagneticAction>
     </div>
 
     <template #footer>
-      <p class="contact-footer mono-label">{{ CONTACT.footer }}</p>
+      <p class="contact-footer mono-label">{{ $t("contact.footer") }}</p>
     </template>
   </SectionShell>
 </template>

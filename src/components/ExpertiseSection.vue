@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import { EXPERTISE, TIPS } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
-import SectionShell from './SectionShell.vue'
+import { TIPS } from "@/data/content";
+import MagneticAction from "./MagneticAction.vue";
+import SectionShell from "./SectionShell.vue";
+
+const tips = TIPS.map((tip) => ({
+  ...tip,
+  titleKey: `expertise.tips.${tip.id}.title` as const,
+  hookKey: `expertise.tips.${tip.id}.hook` as const,
+}));
 </script>
 
 <template>
-  <SectionShell section-id="expertise" :eyebrow="EXPERTISE.eyebrow">
-    <h2 class="section-title reveal">{{ EXPERTISE.title }}</h2>
-    <p class="section-lead reveal">{{ EXPERTISE.lead }}</p>
+  <SectionShell section-id="expertise" :eyebrow="$t('expertise.eyebrow')">
+    <h2 class="section-title reveal">{{ $t("expertise.title") }}</h2>
+    <p class="section-lead reveal">{{ $t("expertise.lead") }}</p>
 
     <ul class="tips">
-      <li v-for="tip in TIPS" :key="tip.title" class="card tip reveal">
-        <p class="tip-tag">{{ EXPERTISE.tag }}</p>
-        <h3 class="tip-title">{{ tip.title }}</h3>
-        <p class="tip-hook">{{ tip.hook }}</p>
-        <MagneticAction class="tip-link" variant="quiet" :href="tip.url" external>
-          {{ EXPERTISE.readCta }}
+      <li v-for="tip in tips" :key="tip.id" class="card tip reveal">
+        <p class="tip-tag">{{ $t("expertise.tag") }}</p>
+        <h3 class="tip-title">{{ $t(tip.titleKey) }}</h3>
+        <p class="tip-hook">{{ $t(tip.hookKey) }}</p>
+        <MagneticAction
+          class="tip-link"
+          variant="quiet"
+          :href="tip.url"
+          external
+        >
+          {{ $t("expertise.readCta") }}
         </MagneticAction>
       </li>
     </ul>

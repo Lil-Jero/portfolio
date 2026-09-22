@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "jerome.dev · Développeur frontend Vue.js 3 à Toulouse",
+    "description": "Développeur frontend Vue.js 3 à Toulouse : 3 ans chez OneStock, dont un an et demi sur la conception et l'évolution de leur design system."
+  },
+  "nav": {
+    "ariaLabel": "Navigation principale",
+    "shortcutHint": "⌘K pour naviguer",
+    "shortcutHintCompact": "Sections"
+  },
+  "sections": {
+    "hero": "Accueil",
+    "experience": "Expérience",
+    "expertise": "Expertise",
+    "projets": "Projets",
+    "contact": "Contact"
+  },
+  "locale": {
+    "name": "Français",
+    "code": "FR",
+    "switchTo": "Switch to English"
+  },
+  "hero": {
+    "eyebrow": "Frontend Developer · Vue.js 3",
+    "title": "Je façonne des interfaces Vue.js cohérentes, du design system au dernier pixel.",
+    "lead": "3 ans de dev front en Vue.js 3 chez OneStock, dont un an et demi à concevoir et faire évoluer leur design system, à mentorer et à garder chaque composant cohérent avec le suivant.",
+    "primaryCta": "Voir mon parcours",
+    "secondaryCta": "Télécharger le CV",
+    "metrics": {
+      "onestock": {
+        "value": "OneStock",
+        "label": "Design system & mentorat"
+      },
+      "years": {
+        "value": "3 ans",
+        "label": "Vue.js 3 en production"
+      },
+      "tips": {
+        "value": "Vue 3 Tips",
+        "label": "Contenu hebdo sur LinkedIn"
+      },
+      "opquast": {
+        "value": "OPQUAST",
+        "label": "Qualité & accessibilité"
+      }
+    }
+  },
+  "experience": {
+    "eyebrow": "Expérience",
+    "title": "De junior à référent design system, chez OneStock.",
+    "role": "Développeur Frontend",
+    "company": "OneStock",
+    "period": "2023 - aujourd’hui",
+    "missions": {
+      "product": "Développement produit en Vue.js 3 sur la plateforme de gestion de commandes",
+      "designSystem": "Conception et évolution du design system pendant un an et demi",
+      "mentoring": "Mentorat de nouveaux arrivants et accompagnement d’une reconversion interne vers le front"
+    },
+    "designSystemLabel": "Design system",
+    "highlights": {
+      "components": {
+        "value": "~30 composants",
+        "description": "documentés et versionnés dans Storybook"
+      },
+      "devs": {
+        "value": "3 devs",
+        "description": "accompagnés - 2 nouveaux arrivants, 1 reconversion vers le front"
+      }
+    },
+    "storybookCta": "Voir le Storybook public →",
+    "previousLabel": "Avant OneStock",
+    "previous": "Wiseas Connect - développement et communication digitale"
+  },
+  "expertise": {
+    "eyebrow": "Expertise",
+    "title": "Des notes techniques sur Vue.js 3, ancrées dans du code réel.",
+    "lead": "Publiées chaque semaine sur LinkedIn, sous le tag Vue 3 Tips - chacune est née d’un cas rencontré chez OneStock.",
+    "tag": "Vue 3 Tips",
+    "readCta": "Lire sur LinkedIn →",
+    "tips": {
+      "shallowRef": {
+        "title": "ref vs shallowRef",
+        "hook": "Quand la réactivité profonde ne sert à rien - et ce qu’elle coûte en performance."
+      },
+      "composables": {
+        "title": "Nommer ses composables",
+        "hook": "Une convention simple pour que toute l’équipe s’y retrouve, projet après projet."
+      },
+      "defineModel": {
+        "title": "defineModel",
+        "hook": "Le sucre syntaxique qui simplifie enfin le v-model des composants."
+      },
+      "pureFunctions": {
+        "title": "Fonctions pures dans les composants",
+        "hook": "Isoler la logique rend les tests, et la relecture, beaucoup plus simples."
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Projets",
+    "title": "Deux explorations produit, à des stades différents.",
+    "lead": "Pas de produit fini à montrer ici, plutôt la façon dont j'aborde un problème avant d'écrire la première ligne de code.",
+    "explorations": {
+      "coachTracking": {
+        "badge": "Phase discovery",
+        "title": "Suivi coachs sportifs",
+        "description": "Une app freemium pour que les coachs sportifs indépendants suivent les séances et la progression de leurs clients.",
+        "factLabel": "Stack",
+        "factValue": "Vue.js 3 · Capacitor",
+        "nextStep": "Prochaine étape : 5 à 8 entretiens coachs pour valider le besoin avant la première ligne de code."
+      },
+      "marketplace": {
+        "badge": "Recherche marché",
+        "title": "Marketplace coachs vérifiés",
+        "description": "Trouver un coach sportif indépendant vérifié à Toulouse - un Doctolib du sport, pensé pour un marché encore peu régulé.",
+        "factLabel": "Cible offre",
+        "factValue": "coachs indépendants (auto-entrepreneurs)",
+        "nextStep": "Piste de différenciation : la carte professionnelle comme signal de confiance."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "On construit quelque chose ensemble ?",
+    "lead": "Ouvert aux opportunités à Toulouse et ses environs, ou en full remote.",
+    "cvCta": "Télécharger le CV",
+    "footer": "Merci d’être arrivé jusqu’ici."
+  },
+  "palette": {
+    "label": "Navigation rapide",
+    "placeholder": "Aller à une section…",
+    "emptyState": "Aucune section ne correspond.",
+    "hint": "Entrée pour y aller · Échap pour fermer"
+  }
+}

@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import AppNav from './components/AppNav.vue'
-import BackdropGlow from './components/BackdropGlow.vue'
-import CommandPalette from './components/CommandPalette.vue'
-import ContactSection from './components/ContactSection.vue'
-import ExperienceSection from './components/ExperienceSection.vue'
-import ExpertiseSection from './components/ExpertiseSection.vue'
-import HeroSection from './components/HeroSection.vue'
-import ProjectsSection from './components/ProjectsSection.vue'
-import { useCommandPalette } from './composables/useCommandPalette'
+import AppNav from "./components/AppNav.vue";
+import BackdropGlow from "./components/BackdropGlow.vue";
+import CommandPalette from "./components/CommandPalette.vue";
+import ContactSection from "./components/ContactSection.vue";
+import ExperienceSection from "./components/ExperienceSection.vue";
+import ExpertiseSection from "./components/ExpertiseSection.vue";
+import HeroSection from "./components/HeroSection.vue";
+import ProjectsSection from "./components/ProjectsSection.vue";
+import { useCommandPalette } from "./composables/useCommandPalette";
+import { useDocumentLocale } from "./composables/useDocumentLocale";
 
-const { isOpen, open, close, goToSection } = useCommandPalette()
+const { isOpen, open, close, goToSection } = useCommandPalette();
+
+useDocumentLocale();
 </script>
 
 <template>
@@ -27,7 +30,11 @@ const { isOpen, open, close, goToSection } = useCommandPalette()
     </main>
   </div>
 
-  <CommandPalette :open="isOpen" @close="close" @section-selected="goToSection" />
+  <CommandPalette
+    :open="isOpen"
+    @close="close"
+    @section-selected="goToSection"
+  />
 </template>
 
 <style lang="scss" scoped>

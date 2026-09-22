@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "jerome.dev · Vue.js 3 frontend developer in Toulouse",
+    "description": "Vue.js 3 frontend developer in Toulouse: 3 years at OneStock, including a year and a half designing and evolving their design system."
+  },
+  "nav": {
+    "ariaLabel": "Main navigation",
+    "shortcutHint": "⌘K to navigate",
+    "shortcutHintCompact": "Sections"
+  },
+  "sections": {
+    "hero": "Home",
+    "experience": "Experience",
+    "expertise": "Expertise",
+    "projets": "Projects",
+    "contact": "Contact"
+  },
+  "locale": {
+    "name": "English",
+    "code": "EN",
+    "switchTo": "Passer en français"
+  },
+  "hero": {
+    "eyebrow": "Frontend Developer · Vue.js 3",
+    "title": "I craft consistent Vue.js interfaces, from design system to the last pixel.",
+    "lead": "3 years of Vue.js 3 frontend development at OneStock, including a year and a half designing and evolving their design system, mentoring teammates, and keeping every component consistent with the next.",
+    "primaryCta": "See my background",
+    "secondaryCta": "Download CV",
+    "metrics": {
+      "onestock": {
+        "value": "OneStock",
+        "label": "Design system & mentoring"
+      },
+      "years": {
+        "value": "3 years",
+        "label": "Vue.js 3 in production"
+      },
+      "tips": {
+        "value": "Vue 3 Tips",
+        "label": "Weekly content on LinkedIn"
+      },
+      "opquast": {
+        "value": "OPQUAST",
+        "label": "Quality & accessibility"
+      }
+    }
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "From junior to design system lead, at OneStock.",
+    "role": "Frontend Developer",
+    "company": "OneStock",
+    "period": "2023 - present",
+    "missions": {
+      "product": "Vue.js 3 product development on the order management platform",
+      "designSystem": "Designed and evolved the design system for a year and a half",
+      "mentoring": "Mentored new hires and supported an internal career shift into frontend"
+    },
+    "designSystemLabel": "Design system",
+    "highlights": {
+      "components": {
+        "value": "~30 components",
+        "description": "documented and versioned in Storybook"
+      },
+      "devs": {
+        "value": "3 devs",
+        "description": "mentored - 2 new hires, 1 internal move to frontend"
+      }
+    },
+    "storybookCta": "View the public Storybook →",
+    "previousLabel": "Before OneStock",
+    "previous": "Wiseas Connect - development and digital communication"
+  },
+  "expertise": {
+    "eyebrow": "Expertise",
+    "title": "Technical notes on Vue.js 3, grounded in real code.",
+    "lead": "Published weekly on LinkedIn under the Vue 3 Tips tag - each one grew out of a real case at OneStock.",
+    "tag": "Vue 3 Tips",
+    "readCta": "Read on LinkedIn →",
+    "tips": {
+      "shallowRef": {
+        "title": "ref vs shallowRef",
+        "hook": "When deep reactivity serves no purpose - and what it costs in performance."
+      },
+      "composables": {
+        "title": "Naming your composables",
+        "hook": "A simple convention so the whole team stays aligned, project after project."
+      },
+      "defineModel": {
+        "title": "defineModel",
+        "hook": "The syntactic sugar that finally simplifies component v-model."
+      },
+      "pureFunctions": {
+        "title": "Pure functions in components",
+        "hook": "Isolating logic makes testing, and code review, much simpler."
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Projects",
+    "title": "Two product explorations, at different stages.",
+    "lead": "No finished product here yet, more a look at how I approach a problem before writing the first line of code.",
+    "explorations": {
+      "coachTracking": {
+        "badge": "Discovery phase",
+        "title": "Sports coach tracking",
+        "description": "A freemium app for independent sports coaches to track sessions and client progress.",
+        "factLabel": "Stack",
+        "factValue": "Vue.js 3 · Capacitor",
+        "nextStep": "Next step: 5 to 8 coach interviews to validate the need before writing any code."
+      },
+      "marketplace": {
+        "badge": "Market research",
+        "title": "Verified coach marketplace",
+        "description": "Finding a verified independent sports coach in Toulouse - a Doctolib for sport, built for a still loosely regulated market.",
+        "factLabel": "Supply-side target",
+        "factValue": "independent coaches (freelancers)",
+        "nextStep": "Differentiation angle: the professional license as a trust signal."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Shall we build something together?",
+    "lead": "Open to opportunities in and around Toulouse or fully remote.",
+    "cvCta": "Download CV",
+    "footer": "Thanks for scrolling this far."
+  },
+  "palette": {
+    "label": "Quick navigation",
+    "placeholder": "Go to a section…",
+    "emptyState": "No matching section.",
+    "hint": "Enter to go · Esc to close"
+  }
+}

@@ -1,30 +1,36 @@
 <script setup lang="ts">
-import { CV_URL, HERO, HERO_METRICS, NAV_LINKS } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
-import SectionShell from './SectionShell.vue'
+import { CV_URL, HERO_METRIC_IDS, NAV_SECTIONS } from "@/data/content";
+import MagneticAction from "./MagneticAction.vue";
+import SectionShell from "./SectionShell.vue";
 
-const EXPERIENCE_ANCHOR = `#${NAV_LINKS[0].id}`
+const EXPERIENCE_ANCHOR = `#${NAV_SECTIONS[0]}`;
+
+const metrics = HERO_METRIC_IDS.map((id) => ({
+  id,
+  valueKey: `hero.metrics.${id}.value` as const,
+  labelKey: `hero.metrics.${id}.label` as const,
+}));
 </script>
 
 <template>
-  <SectionShell section-id="hero" :eyebrow="HERO.eyebrow">
-    <h1 class="hero-title reveal">{{ HERO.title }}</h1>
-    <p class="hero-lead section-lead reveal">{{ HERO.lead }}</p>
+  <SectionShell section-id="hero" :eyebrow="$t('hero.eyebrow')">
+    <h1 class="hero-title reveal">{{ $t("hero.title") }}</h1>
+    <p class="hero-lead section-lead reveal">{{ $t("hero.lead") }}</p>
 
     <div class="hero-actions reveal">
       <MagneticAction variant="primary" :href="EXPERIENCE_ANCHOR">
-        {{ HERO.primaryCta }}
+        {{ $t("hero.primaryCta") }}
       </MagneticAction>
       <MagneticAction variant="ghost" :href="CV_URL" download>
-        {{ HERO.secondaryCta }}
+        {{ $t("hero.secondaryCta") }}
       </MagneticAction>
     </div>
 
     <template #footer>
       <ul class="metrics">
-        <li v-for="metric in HERO_METRICS" :key="metric.label" class="metric">
-          <p class="metric-value">{{ metric.value }}</p>
-          <p class="metric-label mono-label">{{ metric.label }}</p>
+        <li v-for="metric in metrics" :key="metric.id" class="metric">
+          <p class="metric-value">{{ $t(metric.valueKey) }}</p>
+          <p class="metric-label mono-label">{{ $t(metric.labelKey) }}</p>
         </li>
       </ul>
     </template>
@@ -61,7 +67,6 @@ const EXPERIENCE_ANCHOR = `#${NAV_LINKS[0].id}`
   gap: var(--space-m);
   width: 100%;
 }
-
 
 .metric {
   display: flex;

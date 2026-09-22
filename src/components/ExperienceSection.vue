@@ -1,53 +1,73 @@
 <script setup lang="ts">
-import { DESIGN_SYSTEM_HIGHLIGHTS, EXPERIENCE } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
-import SectionShell from './SectionShell.vue'
+import { HIGHLIGHT_IDS, MISSION_IDS, STORYBOOK_URL } from "@/data/content";
+import MagneticAction from "./MagneticAction.vue";
+import SectionShell from "./SectionShell.vue";
+
+const missionKeys = MISSION_IDS.map(
+  (id) => `experience.missions.${id}` as const,
+);
+
+const highlights = HIGHLIGHT_IDS.map((id) => ({
+  id,
+  valueKey: `experience.highlights.${id}.value` as const,
+  descriptionKey: `experience.highlights.${id}.description` as const,
+}));
 </script>
 
 <template>
-  <SectionShell section-id="experience" :eyebrow="EXPERIENCE.eyebrow">
-    <h2 class="section-title reveal">{{ EXPERIENCE.title }}</h2>
+  <SectionShell section-id="experience" :eyebrow="$t('experience.eyebrow')">
+    <h2 class="section-title reveal">{{ $t("experience.title") }}</h2>
 
     <div class="experience-grid">
       <article class="card reveal">
         <header class="role-header">
-          <h3 class="role-title">{{ EXPERIENCE.role }}</h3>
+          <h3 class="role-title">{{ $t("experience.role") }}</h3>
           <p class="role-meta mono-label">
-            {{ EXPERIENCE.company }} · {{ EXPERIENCE.period }}
+            {{ $t("experience.company") }} · {{ $t("experience.period") }}
           </p>
         </header>
 
         <ul class="missions">
-          <li v-for="mission in EXPERIENCE.missions" :key="mission" class="mission">
-            {{ mission }}
+          <li
+            v-for="missionKey in missionKeys"
+            :key="missionKey"
+            class="mission"
+          >
+            {{ $t(missionKey) }}
           </li>
         </ul>
       </article>
 
       <article class="card reveal reveal-late">
-        <p class="mono-label">{{ EXPERIENCE.designSystemLabel }}</p>
+        <p class="mono-label">{{ $t("experience.designSystemLabel") }}</p>
 
         <dl class="highlights">
-          <div v-for="highlight in DESIGN_SYSTEM_HIGHLIGHTS" :key="highlight.value" class="highlight">
-            <dt class="highlight-value">{{ highlight.value }}</dt>
-            <dd class="highlight-description">{{ highlight.description }}</dd>
+          <div
+            v-for="highlight in highlights"
+            :key="highlight.id"
+            class="highlight"
+          >
+            <dt class="highlight-value">{{ $t(highlight.valueKey) }}</dt>
+            <dd class="highlight-description">
+              {{ $t(highlight.descriptionKey) }}
+            </dd>
           </div>
         </dl>
 
         <MagneticAction
           class="storybook-link"
           variant="ghost"
-          :href="EXPERIENCE.storybookUrl"
+          :href="STORYBOOK_URL"
           external
         >
-          {{ EXPERIENCE.storybookCta }}
+          {{ $t("experience.storybookCta") }}
         </MagneticAction>
       </article>
     </div>
 
     <template #footer>
-      <p class="mono-label">{{ EXPERIENCE.previousLabel }}</p>
-      <p class="previous-role">{{ EXPERIENCE.previous }}</p>
+      <p class="mono-label">{{ $t("experience.previousLabel") }}</p>
+      <p class="previous-role">{{ $t("experience.previous") }}</p>
     </template>
   </SectionShell>
 </template>
@@ -92,7 +112,7 @@ import SectionShell from './SectionShell.vue'
 }
 
 .mission::before {
-  content: '';
+  content: "";
   width: 0.35rem;
   height: 0.35rem;
   border-radius: 50%;

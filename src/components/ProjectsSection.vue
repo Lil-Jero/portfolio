@@ -1,28 +1,42 @@
 <script setup lang="ts">
-import { EXPLORATIONS, PROJECTS } from "@/data/content";
+import { EXPLORATIONS } from "@/data/content";
 import SectionShell from "./SectionShell.vue";
+
+const explorations = EXPLORATIONS.map((exploration) => ({
+  ...exploration,
+  badgeKey: `projects.explorations.${exploration.id}.badge` as const,
+  titleKey: `projects.explorations.${exploration.id}.title` as const,
+  descriptionKey:
+    `projects.explorations.${exploration.id}.description` as const,
+  factLabelKey: `projects.explorations.${exploration.id}.factLabel` as const,
+  factValueKey: `projects.explorations.${exploration.id}.factValue` as const,
+  nextStepKey: `projects.explorations.${exploration.id}.nextStep` as const,
+}));
 </script>
 
 <template>
-  <SectionShell section-id="projets" :eyebrow="PROJECTS.eyebrow">
-    <h2 class="section-title reveal">{{ PROJECTS.title }}</h2>
-    <p class="section-lead reveal">{{ PROJECTS.lead }}</p>
+  <SectionShell section-id="projets" :eyebrow="$t('projects.eyebrow')">
+    <h2 class="section-title reveal">{{ $t("projects.title") }}</h2>
+    <p class="section-lead reveal">{{ $t("projects.lead") }}</p>
 
     <ul class="explorations">
       <li
-        v-for="exploration in EXPLORATIONS"
-        :key="exploration.title"
+        v-for="exploration in explorations"
+        :key="exploration.id"
         class="card exploration reveal"
       >
         <p class="badge" :class="`is-${exploration.tone}`">
-          {{ exploration.badge }}
+          {{ $t(exploration.badgeKey) }}
         </p>
-        <h3 class="exploration-title">{{ exploration.title }}</h3>
-        <p class="exploration-description">{{ exploration.description }}</p>
+        <h3 class="exploration-title">{{ $t(exploration.titleKey) }}</h3>
+        <p class="exploration-description">
+          {{ $t(exploration.descriptionKey) }}
+        </p>
         <p class="exploration-fact mono-label">
-          {{ exploration.fact.label }} : {{ exploration.fact.value }}
+          {{ $t(exploration.factLabelKey) }} :
+          {{ $t(exploration.factValueKey) }}
         </p>
-        <p class="exploration-next">{{ exploration.nextStep }}</p>
+        <p class="exploration-next">{{ $t(exploration.nextStepKey) }}</p>
       </li>
     </ul>
   </SectionShell>
