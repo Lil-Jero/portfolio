@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { EXPLORATIONS, FEATURED_PROJECT, PROJECTS } from '@/data/content'
-import MagneticAction from './MagneticAction.vue'
-import SectionShell from './SectionShell.vue'
+import { EXPLORATIONS, FEATURED_PROJECT, PROJECTS } from "@/data/content";
+import MagneticAction from "./MagneticAction.vue";
+import SectionShell from "./SectionShell.vue";
 </script>
 
 <template>
@@ -16,7 +16,13 @@ import SectionShell from './SectionShell.vue'
         <p class="featured-description">{{ FEATURED_PROJECT.description }}</p>
 
         <ul class="stack">
-          <li v-for="item in FEATURED_PROJECT.stack" :key="item" class="stack-item">{{ item }}</li>
+          <li
+            v-for="item in FEATURED_PROJECT.stack"
+            :key="item"
+            class="stack-item"
+          >
+            {{ item }}
+          </li>
         </ul>
 
         <div class="featured-actions">
@@ -39,14 +45,24 @@ import SectionShell from './SectionShell.vue'
         </div>
       </div>
 
-      <p class="featured-preview mono-label">{{ FEATURED_PROJECT.previewLabel }}</p>
+      <p class="featured-preview mono-label">
+        {{ FEATURED_PROJECT.previewLabel }}
+      </p>
     </article>
 
-    <p class="mono-label explorations-label reveal">{{ PROJECTS.explorationsLabel }}</p>
+    <p class="mono-label explorations-label reveal">
+      {{ PROJECTS.explorationsLabel }}
+    </p>
 
     <ul class="explorations">
-      <li v-for="exploration in EXPLORATIONS" :key="exploration.title" class="card exploration reveal">
-        <p class="badge" :class="`is-${exploration.tone}`">{{ exploration.badge }}</p>
+      <li
+        v-for="exploration in EXPLORATIONS"
+        :key="exploration.title"
+        class="card exploration reveal"
+      >
+        <p class="badge" :class="`is-${exploration.tone}`">
+          {{ exploration.badge }}
+        </p>
         <h3 class="exploration-title">{{ exploration.title }}</h3>
         <p class="exploration-description">{{ exploration.description }}</p>
         <p class="exploration-fact mono-label">
