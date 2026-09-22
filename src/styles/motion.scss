@@ -1,0 +1,191 @@
+// Toutes les animations du site sont pilotées par le scroll ou par un état CSS.
+// Aucune n'est calculée en JS : voir README.md pour le détail des choix.
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Une animation l'emporte sur toute declaration normale : animer `color` pour
+// l'etat actif ecraserait le survol. Le scroll anime donc une propriete dediee,
+// et `color` reste libre. L'enregistrement est necessaire pour que la valeur
+// s'interpole au lieu de basculer a mi-parcours ; sa valeur initiale reprend
+// --color-text-muted, qu'un initial-value ne peut pas referencer.
+@property --nav-link-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: rgb(245 247 246 / 0.75);
+}
+
+// Le survol ne peut pas passer par `color` : les bornes d'une transition sont
+// calculees a partir de la valeur de base de --nav-link-color, sans l'animation.
+// Le survol partait donc de la couleur au repos et y revenait, au lieu de partir
+// de la couleur affichee. Il pilote donc un taux de melange, que rien n'anime.
+@property --nav-link-hover {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes nav-link-active {
+  0%,
+  100% {
+    --nav-link-color: var(--color-text-muted);
+  }
+
+  38%,
+  62% {
+    --nav-link-color: var(--color-accent);
+  }
+}
+
+@keyframes glow-drift-accent {
+  from {
+    transform: translate3d(0, -8vh, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(-14vw, 22vh, 0) scale(1.25);
+  }
+}
+
+@keyframes glow-drift-warm {
+  from {
+    transform: translate3d(0, 10vh, 0) scale(1.1);
+  }
+
+  to {
+    transform: translate3d(18vw, -18vh, 0) scale(0.85);
+  }
+}
+
+@keyframes glow-drift-cool {
+  from {
+    transform: translate3d(6vw, 18vh, 0) scale(0.9);
+  }
+
+  to {
+    transform: translate3d(-10vw, -14vh, 0) scale(1.15);
+  }
+}
+
+// Les timelines nommées sont déclarées par les sections et consommées par des
+// éléments extérieurs (liens de nav), ce qui impose de les exposer via timeline-scope.
+:root {
+  timeline-scope: --vt-hero, --vt-experience, --vt-expertise, --vt-projets, --vt-contact;
+}
+
+$sections: hero, experience, expertise, projets, contact;
+
+@each $section in $sections {
+  ##{$section} {
+    view-timeline-name: --vt-#{$section};
+    view-timeline-axis: block;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 85%;
+    }
+
+    .reveal-late {
+      animation-range: entry 20% entry 100%;
+    }
+
+    .glow-accent {
+      animation: glow-drift-accent linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .glow-warm {
+      animation: glow-drift-warm linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .glow-cool {
+      animation: glow-drift-cool linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  // L'état actif de la nav suit la position de chaque section dans le viewport,
+  // sans observer JS : le lien est vert quand sa section occupe le centre de l'écran.
+  @each $section in $sections {
+    .nav-link[data-section='#{$section}'] {
+      animation: nav-link-active linear both;
+      animation-timeline: --vt-#{$section};
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+// Repli pour les navigateurs sans scroll-driven animations : l'ancre courante
+// suffit à marquer la section active après un clic.
+@supports not (animation-timeline: view()) {
+  @each $section in $sections {
+    body:has(##{$section}:target) .nav-link[data-section='#{$section}'] {
+      color: var(--color-accent);
+    }
+  }
+}
+
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-new(command-palette) {
+  animation: palette-in var(--duration-base) var(--ease-out) both;
+}
+
+// Le panneau disparait net : seul le voile se dissipe.
+::view-transition-old(command-palette) {
+  animation: none;
+  opacity: 0;
+}
+
+// Ouvrir ou fermer la palette ne change que le voile : le fondu de la racine y
+// serait trop long. Le saut de section, lui, garde la duree longue.
+html[data-view-transition='palette']::view-transition-old(root),
+html[data-view-transition='palette']::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
