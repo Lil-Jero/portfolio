@@ -68,8 +68,8 @@ export const HERO = {
 export const HERO_METRICS: Metric[] = [
   { value: "OneStock", label: "Design system & mentorat" },
   { value: "3 ans", label: "Vue.js 3 en production" },
-  { value: "100", label: "Accessibilité" },
-  { value: "100", label: "Performance Lighthouse" },
+  { value: "Vue 3 Tips", label: "Contenu hebdo sur LinkedIn" },
+  { value: "OPQUAST", label: "Qualité & accessibilité" },
 ];
 
 export const EXPERIENCE = {
