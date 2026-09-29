@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { BRAND, HOME_SECTION, NAV_SECTIONS } from "@/data/content";
+import { isApplePlatform } from "@/utils/platform";
+import AccentPicker from "./AccentPicker.vue";
 import LocaleToggle from "./LocaleToggle.vue";
 import MagneticAction from "./MagneticAction.vue";
 
@@ -8,6 +10,8 @@ const emit = defineEmits<{
 }>();
 
 const navItems = NAV_SECTIONS.map((id) => ({ id, href: `#${id}` }));
+
+const SHORTCUT_LABEL = isApplePlatform() ? "⌘K" : "Ctrl K";
 </script>
 
 <template>
@@ -18,9 +22,14 @@ const navItems = NAV_SECTIONS.map((id) => ({ id, href: `#${id}` }));
       </a>
 
       <ul class="nav-list">
-        <li v-for="item in navItems" :key="item.id">
-          <a class="nav-link" :href="item.href" :data-section="item.id">
-            {{ $t(`sections.${item.id}`) }}
+        <li
+          v-for="item in navItems"
+          :key="item.id"
+          class="nav-item"
+          :data-section="item.id"
+        >
+          <a class="nav-link" :href="item.href">
+            <span class="nav-link-label">{{ $t(`sections.${item.id}`) }}</span>
           </a>
         </li>
       </ul>
@@ -32,10 +41,11 @@ const navItems = NAV_SECTIONS.map((id) => ({ id, href: `#${id}` }));
           :aria-label="$t('palette.label')"
           @click="emit('paletteRequested')"
         >
-          <span class="hint-full">{{ $t("nav.shortcutHint") }}</span>
+          <span class="hint-full">{{ $t("nav.shortcutHint", { shortcut: SHORTCUT_LABEL }) }}</span>
           <span class="hint-compact">{{ $t("nav.shortcutHintCompact") }}</span>
         </MagneticAction>
 
+        <AccentPicker />
         <LocaleToggle />
       </div>
     </nav>
@@ -80,23 +90,22 @@ const navItems = NAV_SECTIONS.map((id) => ({ id, href: `#${id}` }));
   gap: var(--space-l);
 }
 
-.nav-link {
-  --nav-link-color: var(--color-text-muted);
-  --nav-link-hover: 0;
-
-  // La premiere declaration sert de repli aux navigateurs sans color-mix.
-  color: var(--nav-link-color);
-  color: color-mix(
-    in srgb,
-    var(--color-accent) calc(var(--nav-link-hover) * 100%),
-    var(--nav-link-color)
-  );
-  font-size: var(--text-small);
-  transition: --nav-link-hover var(--duration-base) var(--ease-out);
+.nav-item {
+  color: var(--color-text-muted);
 }
 
-.nav-link:hover {
-  --nav-link-hover: 1;
+.nav-link {
+  font-size: var(--text-small);
+}
+
+// Le libellé n'est pas animé : son survol l'emporte sur l'état actif, que le
+// scroll anime sur l'item, et sa transition part de la couleur affichée.
+.nav-link-label {
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.nav-link:hover .nav-link-label {
+  color: var(--color-accent);
 }
 
 .nav-actions {

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { CV_URLS, HERO_METRIC_IDS, NAV_SECTIONS } from "@/data/content";
-import type { AppLocale } from "@/i18n";
+import { HERO_METRIC_IDS, NAV_SECTIONS } from "@/data/content";
+import { useCvUrl } from "@/composables/useCvUrl";
 import MagneticAction from "./MagneticAction.vue";
 import SectionShell from "./SectionShell.vue";
 
-const { locale } = useI18n();
-
 const EXPERIENCE_ANCHOR = `#${NAV_SECTIONS[0]}`;
 
-const cvUrl = computed(() => CV_URLS[locale.value as AppLocale]);
+const cvUrl = useCvUrl();
 
 const metrics = HERO_METRIC_IDS.map((id) => ({
   id,
@@ -23,6 +19,7 @@ const metrics = HERO_METRIC_IDS.map((id) => ({
   <SectionShell section-id="hero" :eyebrow="$t('hero.eyebrow')">
     <h1 class="hero-title reveal">{{ $t("hero.title") }}</h1>
     <p class="hero-lead section-lead reveal">{{ $t("hero.lead") }}</p>
+    <p class="hero-aside reveal">{{ $t("hero.aside") }}</p>
 
     <div class="hero-actions reveal">
       <MagneticAction variant="primary" :href="EXPERIENCE_ANCHOR">
@@ -59,6 +56,14 @@ const metrics = HERO_METRIC_IDS.map((id) => ({
 .hero-lead {
   max-width: 52ch;
   font-size: var(--text-lead);
+}
+
+.hero-aside {
+  max-width: 52ch;
+  padding-inline-start: var(--space-s);
+  border-inline-start: 2px solid var(--color-accent);
+  font-size: var(--text-small);
+  text-wrap: pretty;
 }
 
 .hero-actions {

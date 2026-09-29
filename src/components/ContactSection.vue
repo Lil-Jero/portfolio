@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { CONTACT, CV_URLS } from "@/data/content";
-import type { AppLocale } from "@/i18n";
+import { CONTACT } from "@/data/content";
+import { useCvUrl } from "@/composables/useCvUrl";
 import MagneticAction from "./MagneticAction.vue";
 import SectionShell from "./SectionShell.vue";
 
-const { locale } = useI18n();
-
-const cvUrl = computed(() => CV_URLS[locale.value as AppLocale]);
+const cvUrl = useCvUrl();
 </script>
 
 <template>

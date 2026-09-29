@@ -19,36 +19,20 @@
   }
 }
 
-// Une animation l'emporte sur toute declaration normale : animer `color` pour
-// l'etat actif ecraserait le survol. Le scroll anime donc une propriete dediee,
-// et `color` reste libre. L'enregistrement est necessaire pour que la valeur
-// s'interpole au lieu de basculer a mi-parcours ; sa valeur initiale reprend
-// --color-text-muted, qu'un initial-value ne peut pas referencer.
-@property --nav-link-color {
-  syntax: '<color>';
-  inherits: false;
-  initial-value: rgb(245 247 246 / 0.75);
-}
-
-// Le survol ne peut pas passer par `color` : les bornes d'une transition sont
-// calculees a partir de la valeur de base de --nav-link-color, sans l'animation.
-// Le survol partait donc de la couleur au repos et y revenait, au lieu de partir
-// de la couleur affichee. Il pilote donc un taux de melange, que rien n'anime.
-@property --nav-link-hover {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0;
-}
-
-@keyframes nav-link-active {
+// Dans un lien déjà visité, Chrome peint avec la couleur héritée toute couleur
+// animée qui passe par var(), le temps de l'animation : le lien actif restait
+// blanc. L'animation porte donc sur l'item de liste, qui n'est pas un lien, et
+// le lien en hérite. Le survol, qu'une animation écraserait, est porté par le
+// libellé à l'intérieur du lien (voir AppNav.vue).
+@keyframes nav-item-active {
   0%,
   100% {
-    --nav-link-color: var(--color-text-muted);
+    color: var(--color-text-muted);
   }
 
   38%,
   62% {
-    --nav-link-color: var(--color-accent);
+    color: var(--color-accent);
   }
 }
 
@@ -128,8 +112,8 @@ $sections: hero, experience, expertise, projets, contact;
   // L'état actif de la nav suit la position de chaque section dans le viewport,
   // sans observer JS : le lien est vert quand sa section occupe le centre de l'écran.
   @each $section in $sections {
-    .nav-link[data-section='#{$section}'] {
-      animation: nav-link-active linear both;
+    .nav-item[data-section='#{$section}'] {
+      animation: nav-item-active linear both;
       animation-timeline: --vt-#{$section};
       animation-range: cover 0% cover 100%;
     }
@@ -140,7 +124,7 @@ $sections: hero, experience, expertise, projets, contact;
 // suffit à marquer la section active après un clic.
 @supports not (animation-timeline: view()) {
   @each $section in $sections {
-    body:has(##{$section}:target) .nav-link[data-section='#{$section}'] {
+    body:has(##{$section}:target) .nav-item[data-section='#{$section}'] {
       color: var(--color-accent);
     }
   }

@@ -3,9 +3,18 @@ import { HOME_SECTION, type SectionId } from "@/data/content";
 import { runViewTransition } from "@/utils/viewTransition";
 
 const SHORTCUT_KEY = "k";
+const OPEN_POPOVER_SELECTOR = ":popover-open";
+
+// Un popover vit dans le top layer : laissé ouvert, il passerait par-dessus la
+// palette alors que le reste de la page est inerte.
+const hideOpenPopovers = () => {
+  document
+    .querySelectorAll<HTMLElement>(OPEN_POPOVER_SELECTOR)
+    .forEach((popover) => popover.hidePopover());
+};
 
 /**
- * Pilote la palette de navigation (⌘K) et le saut vers une section.
+ * Pilote la palette de commandes (⌘K / Ctrl+K) et le saut vers une section.
  *
  * Le saut passe par la View Transitions API : le défilement est instantané et
  * c'est le navigateur qui fond l'ancien viewport dans le nouveau. Une lib
@@ -18,6 +27,7 @@ export function useCommandPalette() {
 
   const open = async () => {
     if (isOpen.value) return;
+    hideOpenPopovers();
     elementBeforeOpen =
       document.activeElement instanceof HTMLElement
         ? document.activeElement

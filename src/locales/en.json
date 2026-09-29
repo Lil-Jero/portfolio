@@ -5,7 +5,7 @@
   },
   "nav": {
     "ariaLabel": "Main navigation",
-    "shortcutHint": "⌘K to navigate",
+    "shortcutHint": "{shortcut} to navigate",
     "shortcutHintCompact": "Sections"
   },
   "sections": {
@@ -24,6 +24,7 @@
     "eyebrow": "Frontend Developer · Vue.js 3",
     "title": "I craft consistent Vue.js interfaces, from design system to the last pixel.",
     "lead": "3 years of Vue.js 3 frontend development at OneStock, including a year and a half designing and evolving their design system, mentoring teammates, and keeping every component consistent with the next.",
+    "aside": "I never had a teacher, not for piano and not for Vue.js 3. Mostly, it teaches you to be wary of your own shortcuts.",
     "primaryCta": "See my background",
     "secondaryCta": "Download CV",
     "metrics": {
@@ -53,7 +54,7 @@
     "period": "2023 - present",
     "missions": {
       "product": "Vue.js 3 product development on the order management platform",
-      "designSystem": "Designed and evolved the design system for a year and a half",
+      "designSystem": "Mostly R&D product development, with a side contribution to the design system for a year and a half",
       "mentoring": "Mentored new hires and supported an internal career shift into frontend"
     },
     "designSystemLabel": "Design system",
@@ -127,9 +128,39 @@
     "footer": "Thanks for scrolling this far."
   },
   "palette": {
-    "label": "Quick navigation",
-    "placeholder": "Go to a section…",
-    "emptyState": "No matching section.",
-    "hint": "Enter to go · Esc to close"
+    "label": "Command palette",
+    "placeholder": "Type a command…",
+    "goTo": "Go to {section}",
+    "actions": {
+      "downloadCv": {
+        "label": "Download CV",
+        "hint": "pdf"
+      },
+      "copyEmail": {
+        "label": "Copy my email",
+        "hint": "copy"
+      }
+    },
+    "emptyState": "No matching command.",
+    "easterEggs": {
+      "coffee": "Always up for a coffee in Toulouse. Virtual otherwise.",
+      "piano": "Right now: teaching myself piano. Still no teacher.",
+      "vue2": "We don't talk about that anymore."
+    },
+    "hint": "↑↓ · Enter to run · Esc to close"
+  },
+  "toast": {
+    "emailCopied": "Email copied to clipboard.",
+    "emailCopyFailed": "Couldn't copy, the address is: {email}"
+  },
+  "accent": {
+    "label": "Customize the accent",
+    "options": {
+      "vue": "Vue.js green",
+      "blue": "Blue",
+      "coral": "Coral",
+      "amber": "Amber",
+      "rose": "Pink"
+    }
   }
 }

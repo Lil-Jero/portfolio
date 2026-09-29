@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { HOME_SECTION, NAV_SECTIONS, type SectionId } from "@/data/content";
+import {
+  HOME_SECTION,
+  NAV_SECTIONS,
+  PALETTE_ACTIONS,
+  type PaletteActionId,
+  type SectionId,
+} from "@/data/content";
+import { findEasterEgg, normalizeSearch } from "@/utils/paletteSearch";
 
-const DIACRITICS_PATTERN = /\p{Diacritic}/gu;
 const PALETTE_SECTIONS: SectionId[] = [HOME_SECTION, ...NAV_SECTIONS];
+
+type PaletteItem = {
+  key: string;
+  label: string;
+  hint: string;
+  select: () => void;
+};
 
 const { open } = defineProps<{
   open: boolean;
@@ -13,6 +26,7 @@ const { open } = defineProps<{
 const emit = defineEmits<{
   close: [];
   sectionSelected: [sectionId: SectionId];
+  actionSelected: [actionId: PaletteActionId];
 }>();
 
 const { t } = useI18n();
@@ -21,28 +35,58 @@ const query = ref("");
 const highlightedIndex = ref(0);
 const searchInput = useTemplateRef<HTMLInputElement>("searchInput");
 
-const normalize = (value: string): string =>
-  value.normalize("NFD").replace(DIACRITICS_PATTERN, "").toLowerCase();
-
-const paletteItems = computed(() =>
-  PALETTE_SECTIONS.map((id) => ({ id, label: t(`sections.${id}`) })),
+const sectionItems = computed<PaletteItem[]>(() =>
+  PALETTE_SECTIONS.map((id) => ({
+    key: id,
+    label: t("palette.goTo", { section: t(`sections.${id}`) }),
+    hint: `#${id}`,
+    select: () => emit("sectionSelected", id),
+  })),
 );
 
+const actionItems = computed<PaletteItem[]>(() =>
+  PALETTE_ACTIONS.map((id) => ({
+    key: id,
+    label: t(`palette.actions.${id}.label`),
+    hint: t(`palette.actions.${id}.hint`),
+    select: () => emit("actionSelected", id),
+  })),
+);
+
+const paletteItems = computed(() => [
+  ...sectionItems.value,
+  ...actionItems.value,
+]);
+
 const matchingItems = computed(() => {
-  const term = normalize(query.value.trim());
+  const term = normalizeSearch(query.value);
   if (term === "") return paletteItems.value;
   return paletteItems.value.filter((item) =>
-    normalize(item.label).includes(term),
+    normalizeSearch(item.label).includes(term),
   );
 });
 
 const matchCount = computed(() => matchingItems.value.length);
-const hasNoMatch = computed(() => matchCount.value === 0);
+
+const easterEgg = computed(() => findEasterEgg(query.value));
+
+const easterEggMessage = computed(() =>
+  easterEgg.value === undefined
+    ? undefined
+    : t(`palette.easterEggs.${easterEgg.value}`),
+);
+
+const hasNoMatch = computed(
+  () => matchCount.value === 0 && easterEgg.value === undefined,
+);
+
+const announcement = computed(() => {
+  if (easterEggMessage.value !== undefined) return easterEggMessage.value;
+  return hasNoMatch.value ? t("palette.emptyState") : "";
+});
 
 const selectHighlighted = () => {
-  const item = matchingItems.value[highlightedIndex.value];
-  if (item === undefined) return;
-  emit("sectionSelected", item.id);
+  matchingItems.value[highlightedIndex.value]?.select();
 };
 
 const moveHighlight = (step: number) => {
@@ -101,28 +145,32 @@ watch(
         <span class="palette-highlight" aria-hidden="true" />
 
         <TransitionGroup tag="ul" name="palette-row" class="palette-list">
-          <li
-            v-for="(item, index) in matchingItems"
-            :key="item.id"
-            class="palette-row"
-          >
+          <li v-for="(item, index) in matchingItems" :key="item.key">
             <button
               class="palette-item"
               :class="{ 'is-highlighted': index === highlightedIndex }"
               type="button"
-              @click="emit('sectionSelected', item.id)"
+              @click="item.select()"
               @mouseenter="highlightedIndex = index"
             >
               <span>{{ item.label }}</span>
-              <span class="palette-item-hash">#{{ item.id }}</span>
+              <span class="palette-item-hint">{{ item.hint }}</span>
             </button>
           </li>
         </TransitionGroup>
       </div>
 
-      <p v-if="hasNoMatch" class="palette-empty">
+      <Transition name="palette-egg">
+        <p v-if="easterEggMessage" class="palette-egg" aria-hidden="true">
+          {{ easterEggMessage }}
+        </p>
+      </Transition>
+
+      <p v-if="hasNoMatch" class="palette-empty" aria-hidden="true">
         {{ $t("palette.emptyState") }}
       </p>
+
+      <p class="visually-hidden" role="status">{{ announcement }}</p>
 
       <p class="palette-hint mono-label">{{ $t("palette.hint") }}</p>
     </div>
@@ -130,6 +178,9 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+// Le verre depoli vient du voile, qui floute toute la page : le panneau n'a
+// qu'a etre translucide. Un backdrop-filter sur le panneau lui-meme laissait un
+// rectangle flou dans l'instantane de la View Transition a la fermeture.
 .palette-overlay {
   position: fixed;
   inset: 0;
@@ -138,6 +189,7 @@ watch(
   justify-content: center;
   padding: var(--space-xl) var(--layout-gutter);
   background-color: var(--color-scrim);
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .palette {
@@ -179,13 +231,16 @@ watch(
   overflow: hidden;
 }
 
-@for $count from 0 through 5 {
+// A tenir egal au nombre total de commandes (sections et actions).
+$palette-max-rows: 7;
+
+@for $count from 0 through $palette-max-rows {
   .palette-results[data-count="#{$count}"] {
     --palette-rows: #{$count};
   }
 }
 
-@for $index from 0 through 4 {
+@for $index from 0 through $palette-max-rows - 1 {
   .palette-results[data-highlight="#{$index}"] {
     --palette-highlight-row: #{$index};
   }
@@ -232,10 +287,19 @@ watch(
   color: var(--color-text);
 }
 
-.palette-item-hash {
+.palette-item-hint {
   color: var(--color-text-faint);
   font-family: var(--font-mono);
   font-size: var(--text-eyebrow);
+}
+
+.palette-egg {
+  padding: var(--space-2xs) var(--space-s);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-s);
+  background-color: var(--color-accent-soft);
+  font-size: var(--text-small);
+  text-wrap: pretty;
 }
 
 .palette-empty {
@@ -277,6 +341,19 @@ watch(
   .palette-row-leave-active {
     position: absolute;
     inset-inline: 0;
+  }
+
+  .palette-egg-enter-active,
+  .palette-egg-leave-active {
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .palette-egg-enter-from,
+  .palette-egg-leave-to {
+    opacity: 0;
+    transform: translateY(0.25rem);
   }
 }
 </style>

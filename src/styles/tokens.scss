@@ -1,6 +1,35 @@
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+
+// Accents proposés au visiteur. Les ids reprennent ACCENT_IDS (data/content.ts).
+$accents: (
+  "vue": #42b883,
+  "blue": #6c8ef5,
+  "coral": #ff9466,
+  "amber": #f5c451,
+  "rose": #f2678a,
+);
+
+// L'accent est décomposé en oklch, sa teinte en cosinus et sinus. Le
+// changement d'accent anime ces composantes (utils/accent.ts) et non la
+// couleur : interpolée en ligne droite, la couleur passerait par un gris entre
+// deux teintes presque opposées (vert et rose). Composante par composante, la
+// saturation se maintient et atan2() fait tourner la teinte par le plus court
+// chemin.
+@function accent-channels($color) {
+  $hue: color.channel($color, "hue", $space: oklch);
+
+  @return (
+    "l": color.channel($color, "lightness", $space: oklch),
+    "c": color.channel($color, "chroma", $space: oklch),
+    "x": math.cos($hue),
+    "y": math.sin($hue)
+  );
+}
+
 :root {
   --color-bg: #0b0f0e;
-  --color-accent: #42b883;
   --color-warm: #ff9466;
   --color-cool: #6c8ef5;
   --color-text: #f5f7f6;
@@ -15,18 +44,23 @@
   --color-border-strong: rgb(245 247 246 / 0.16);
 
   --color-glass: rgb(11 15 14 / 0.45);
-  --color-panel: rgb(18 24 22 / 0.98);
-  --color-accent-soft: rgb(66 184 131 / 0.12);
-  --color-accent-border: rgb(66 184 131 / 0.35);
+  --color-glass-strong: rgb(11 15 14 / 0.72);
+  --color-panel: rgb(18 24 22 / 0.7);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --color-accent-border: color-mix(
+    in srgb,
+    var(--color-accent) 35%,
+    transparent
+  );
   --color-warm-soft: rgb(255 148 102 / 0.12);
   --color-warm-border: rgb(255 148 102 / 0.35);
   --color-cool-soft: rgb(108 142 245 / 0.12);
   --color-cool-border: rgb(108 142 245 / 0.35);
-  --color-scrim: rgb(4 6 6 / 0.72);
+  --color-scrim: rgb(4 6 6 / 0.55);
 
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --text-eyebrow: 0.75rem;
   --text-label: 0.8125rem;
@@ -80,4 +114,24 @@
   --z-content: 1;
   --z-nav: 2;
   --z-overlay: 3;
+}
+
+// La couleur est recomposée sur chaque élément qui définit les composantes,
+// puis transmise telle quelle à ses descendants.
+:root,
+[data-accent] {
+  --color-accent: oklch(
+    var(--accent-l) var(--accent-c) atan2(var(--accent-y), var(--accent-x))
+  );
+}
+
+// Posé sur <html>, l'attribut change l'accent de tout le site. Posé sur un
+// autre élément, il ne recolore que celui-ci : c'est ce qui teinte les pastilles
+// du sélecteur sans répéter les valeurs.
+@each $name, $color in $accents {
+  [data-accent="#{$name}"] {
+    @each $channel, $value in accent-channels($color) {
+      --accent-#{$channel}: #{$value};
+    }
+  }
 }

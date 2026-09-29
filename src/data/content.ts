@@ -24,6 +24,17 @@ export type Tip = {
   url: string;
 };
 
+export type PaletteActionId = "downloadCv" | "copyEmail";
+
+export type EasterEggId = "coffee" | "piano" | "vue2";
+
+export type EasterEgg = {
+  id: EasterEggId;
+  triggers: string[];
+};
+
+export type AccentId = "vue" | "blue" | "coral" | "amber" | "rose";
+
 export type ExplorationId = "coachTracking" | "marketplace";
 
 export type Exploration = {
@@ -49,6 +60,21 @@ export const CV_URLS: Record<AppLocale, string> = {
   fr: "/jerome_voipierre_cv.pdf",
   en: "/jerome_voipierre_cv_en.pdf",
 };
+
+export const PALETTE_ACTIONS: PaletteActionId[] = ["downloadCv", "copyEmail"];
+
+// Les déclencheurs sont comparés à la saisie sans accents, sans espaces et en
+// minuscules : « Café » ou « vue 2 » fonctionnent aussi.
+export const EASTER_EGGS: EasterEgg[] = [
+  { id: "coffee", triggers: ["cafe", "coffee"] },
+  { id: "piano", triggers: ["piano"] },
+  { id: "vue2", triggers: ["vue2"] },
+];
+
+// Les teintes elles-mêmes vivent dans styles/tokens.scss, sous les mêmes ids.
+export const ACCENT_IDS: AccentId[] = ["vue", "blue", "coral", "amber", "rose"];
+
+export const DEFAULT_ACCENT: AccentId = "vue";
 
 export const HERO_METRIC_IDS: MetricId[] = [
   "onestock",

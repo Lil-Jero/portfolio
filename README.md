@@ -23,7 +23,8 @@ src/
   styles/tokens.scss     design tokens (custom properties)
   styles/base.scss       reset, typographie, classes partagées
   styles/motion.scss     animations scroll-driven, view transitions
-  composables/           useMagnetic, useCommandPalette, useReducedMotion
+  composables/           useMagnetic, useCommandPalette, useAccent, useToast…
+  utils/                 fonctions sans état Vue (recherche, accent, téléchargement)
   components/            une section = un composant
 ```
 
@@ -54,10 +55,15 @@ L'état actif de la nav mérite un mot : chaque section déclare une
 lien devient vert quand sa section occupe le centre du viewport, sans une ligne
 de JS.
 
-Le survol des liens est vert lui aussi, ce qui a demandé un détour : une
-animation l'emporte sur toute déclaration normale, donc animer `color` pour
-l'état actif écrasait purement et simplement le `:hover`. Le scroll anime une
-propriété enregistrée via `@property`, et `color` reste libre pour le survol.
+Le survol des liens prend l'accent lui aussi, ce qui a demandé deux détours.
+Une animation l'emporte sur toute déclaration normale : animer `color` sur le
+lien pour l'état actif écraserait le `:hover`. Et dans un lien déjà visité,
+Chrome peint avec la couleur héritée toute couleur animée qui passe par
+`var()`, ou qui dépend d'une custom property animée : le lien actif restait
+blanc, et le survol passait au blanc avant de basculer sur l'accent. L'état
+actif est donc animé sur l'item de liste, qui n'est pas un lien, et le lien en
+hérite ; le survol est une simple transition de `color` sur le libellé, à
+l'intérieur du lien, qui part de la couleur affichée.
 
 Repli : tout le bloc est sous `@supports (animation-timeline: view())`. Sans
 support, le contenu s'affiche normalement et l'état actif retombe sur
@@ -76,12 +82,13 @@ l'animation, ce qui permet au CSS de séparer les cadences : ouvrir ou fermer la
 palette ne change que le voile, le fondu de la racine y dure 240 ms, alors que
 le saut de section garde ses 420 ms.
 
-Le panneau de la palette est opaque, contrairement à la barre de navigation et
-aux bandes de section qui restent en verre dépoli. La raison est l'interaction
-entre `backdrop-filter` et la View Transitions API : le flou est cuit dans
-l'instantané de la racine, donc à la fermeture un rectangle flou aux dimensions
-du panneau restait par-dessus le titre pendant toute la durée du fondu. Aucune
-courbe ni durée ne corrige ça, seule la suppression du flou sur ce panneau.
+Le verre dépoli de la palette est porté par le voile, pas par le panneau : le
+voile floute toute la page et le panneau, simplement translucide, laisse voir ce
+flou. La raison est l'interaction entre `backdrop-filter` et la View
+Transitions API : posé sur le panneau, le flou était cuit dans l'instantané de
+la racine, donc à la fermeture un rectangle flou aux dimensions du panneau
+restait par-dessus le titre pendant toute la durée du fondu. Posé sur le voile,
+il fait partie de la racine et se dissipe avec lui.
 
 Le panneau est par ailleurs animé à l'ouverture seulement, il s'efface net en
 sortie et seul le voile se dissipe.
@@ -89,6 +96,17 @@ sortie et seul le voile se dissipe.
 Les liens de la barre de navigation restent, eux, de simples ancres : ils
 profitent du `scroll-behavior: smooth` natif. Les deux gestes ne se marchent
 pas dessus, la page reste navigable sans JavaScript.
+
+### Commandes de la palette
+
+Outre les sections, la palette télécharge le CV dans la langue affichée et
+copie l'adresse email, confirmée par un toast. La copie est lancée avant la
+fermeture : selon les navigateurs, le presse-papier n'est accessible que
+pendant le geste de l'utilisateur.
+
+Quelques mots tapés dans le champ (`café`, `piano`, `vue2`) affichent une
+réponse dans la palette elle-même. Ils sont comparés sans accents ni espaces,
+et déclarés dans `src/data/content.ts`.
 
 ### Filtrage de la palette : FLIP natif de Vue
 
@@ -111,6 +129,39 @@ La View Transitions API serait le mauvais outil ici : chaque frappe annulerait
 la transition précédente, et le champ afficherait une image figée pendant
 l'animation. Elle reste sur l'ouverture, la fermeture et le saut de section,
 où l'état change d'un coup.
+
+### Accent personnalisable
+
+Le sélecteur de la barre propose cinq accents curés plutôt qu'un choix libre.
+Les teintes sont déclarées une seule fois, dans une map Sass de
+`tokens.scss` : chacune produit une règle `[data-accent='…']` qui redéfinit
+`--color-accent`. Posé sur `<html>`, l'attribut recolore tout le site ; posé
+sur une pastille, il ne recolore qu'elle, ce qui évite de répéter les valeurs.
+`--color-accent-soft` et `--color-accent-border` en dérivent par `color-mix()`.
+
+Le changement se fait en fondu, sauf sous `prefers-reduced-motion: reduce`,
+mais ce n'est pas la couleur qui est interpolée : en ligne droite, elle
+passerait par un gris entre deux teintes presque opposées (vert et rose).
+Chaque accent est décomposé à la compilation en composantes oklch, la teinte
+en cosinus et sinus, et `--color-accent` est recomposée par
+`oklch(… atan2(y, x))` : la saturation se maintient et la teinte tourne par le
+plus court chemin.
+
+Ces composantes sont interpolées en JS, image par image, et non par une
+transition CSS : c'est le seul cas où le CSS ne suffit pas. Une custom property
+animée fait passer au blanc tout texte coloré avec elle à l'intérieur d'un lien
+visité (le `.dev` du logo, les liens de la barre), le temps de l'animation.
+Écrire les valeurs à chaque image n'est pas une animation pour le navigateur,
+ces liens suivent donc comme le reste.
+
+Le choix est retenu dans `localStorage` et appliqué avant le montage de l'app,
+pour ne pas afficher un premier rendu vert.
+
+Le panneau est un `popover` natif (fermeture par `Échap` ou clic extérieur,
+sans code) positionné par anchor positioning, avec un repli sous la barre. Les
+pastilles sont de vrais boutons radio : les flèches passent d'un accent à
+l'autre. Un popover vivant dans le top layer, la palette le ferme à son
+ouverture pour ne pas le laisser par-dessus.
 
 ### Curseur magnétique : le seul usage de motion-v
 
@@ -143,8 +194,11 @@ position.
 
 ## Accessibilité
 
-- navigation complète au clavier, `⌘K` / `Ctrl+K` pour la palette, flèches et
-  `Entrée` dans la liste, `Échap` pour fermer ;
+- navigation complète au clavier, `⌘K` / `Ctrl+K` pour la palette (le badge
+  affiche le raccourci de la plateforme), flèches et `Entrée` dans la liste,
+  `Échap` pour fermer ;
+- les réponses de la palette et le toast sont annoncés par une région
+  `role="status"` ;
 - le reste de la page passe en `inert` quand la palette est ouverte, et le
   focus revient sur l'élément d'origine à la fermeture ;
 - sous 48rem, la palette remplace les liens de la barre : elle reste une simple

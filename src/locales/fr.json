@@ -5,7 +5,7 @@
   },
   "nav": {
     "ariaLabel": "Navigation principale",
-    "shortcutHint": "⌘K pour naviguer",
+    "shortcutHint": "{shortcut} pour naviguer",
     "shortcutHintCompact": "Sections"
   },
   "sections": {
@@ -24,6 +24,7 @@
     "eyebrow": "Frontend Developer · Vue.js 3",
     "title": "Je façonne des interfaces Vue.js cohérentes, du design system au dernier pixel.",
     "lead": "3 ans de dev front en Vue.js 3 chez OneStock, dont un an et demi à concevoir et faire évoluer leur design system, à mentorer et à garder chaque composant cohérent avec le suivant.",
+    "aside": "Je n'ai jamais eu de prof, ni pour le piano ni pour Vue.js 3. Ça apprend surtout à se méfier de ses propres raccourcis.",
     "primaryCta": "Voir mon parcours",
     "secondaryCta": "Télécharger le CV",
     "metrics": {
@@ -53,7 +54,7 @@
     "period": "2023 - aujourd’hui",
     "missions": {
       "product": "Développement produit en Vue.js 3 sur la plateforme de gestion de commandes",
-      "designSystem": "Conception et évolution du design system pendant un an et demi",
+      "designSystem": "Développement produit en R&D principalement, avec une contribution complémentaire au design system pendant un an et demi",
       "mentoring": "Mentorat de nouveaux arrivants et accompagnement d’une reconversion interne vers le front"
     },
     "designSystemLabel": "Design system",
@@ -127,9 +128,39 @@
     "footer": "Merci d’être arrivé jusqu’ici."
   },
   "palette": {
-    "label": "Navigation rapide",
-    "placeholder": "Aller à une section…",
-    "emptyState": "Aucune section ne correspond.",
-    "hint": "Entrée pour y aller · Échap pour fermer"
+    "label": "Palette de commandes",
+    "placeholder": "Tapez une commande…",
+    "goTo": "Aller à {section}",
+    "actions": {
+      "downloadCv": {
+        "label": "Télécharger le CV",
+        "hint": "pdf"
+      },
+      "copyEmail": {
+        "label": "Copier mon email",
+        "hint": "copie"
+      }
+    },
+    "emptyState": "Aucune commande ne correspond.",
+    "easterEggs": {
+      "coffee": "Toujours partant pour un café à Toulouse. Virtuel sinon.",
+      "piano": "En ce moment : autodidacte au piano. Toujours pas de prof.",
+      "vue2": "On n'en parle plus."
+    },
+    "hint": "↑↓ · Entrée pour valider · Échap pour fermer"
+  },
+  "toast": {
+    "emailCopied": "Email copié dans le presse-papier.",
+    "emailCopyFailed": "Copie impossible, l'adresse : {email}"
+  },
+  "accent": {
+    "label": "Personnalise l'accent",
+    "options": {
+      "vue": "Vert Vue.js",
+      "blue": "Bleu",
+      "coral": "Corail",
+      "amber": "Ambre",
+      "rose": "Rose"
+    }
   }
 }
